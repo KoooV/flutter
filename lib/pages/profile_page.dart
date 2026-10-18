@@ -1,12 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:pr2/theme/app_theme.dart';
 import 'package:pr2/widgets/text_field.dart';
-
-void main() {
-  runApp(MaterialApp(
-    debugShowCheckedModeBanner: false,
-    home: ProfilePage(),
-  ));
-}
 
 class ProfilePage extends StatelessWidget {
   ProfilePage({super.key});
@@ -26,20 +20,21 @@ class ProfilePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.white,
+      backgroundColor: AppTheme.scaffoldBackground,
       body: SafeArea(
         child: Column(
           children: [
             Container(
               width: double.infinity,
               padding: const EdgeInsets.all(16),
+              color: AppTheme.card,
               child: Row(
                 children: [
                   IconButton(
                     icon: const Icon(
                       Icons.arrow_back_ios_new,
                       size: 20,
-                      color: Colors.black87,
+                      color: AppTheme.textIcon,
                     ),
                     onPressed: () {},
                   ),
@@ -49,7 +44,7 @@ class ProfilePage extends StatelessWidget {
                     style: TextStyle(
                       fontSize: 24,
                       fontWeight: FontWeight.bold,
-                      color: Colors.black87,
+                      color: AppTheme.textPrimary,
                     ),
                   ),
                   const Spacer(),
@@ -63,12 +58,12 @@ class ProfilePage extends StatelessWidget {
                 child: Column(
                   mainAxisSize: MainAxisSize.min,
                   children: [
-                    const CircleAvatar(
+                    CircleAvatar(
                       radius: 50,
-                      backgroundImage: NetworkImage(
+                      backgroundImage: const NetworkImage(
                         'https://i.pravatar.cc/150?u=profile',
                       ),
-                      backgroundColor: Colors.grey,
+                      backgroundColor: AppTheme.card,
                     ),
                     const SizedBox(height: 24),
                     Form(
@@ -160,8 +155,8 @@ class ProfilePage extends StatelessWidget {
                                 }
                               },
                               style: ElevatedButton.styleFrom(
-                                backgroundColor: Colors.black,
-                                foregroundColor: Colors.white,
+                                backgroundColor: AppTheme.surface,
+                                foregroundColor: AppTheme.textPrimary,
                                 shape: RoundedRectangleBorder(
                                   borderRadius: BorderRadius.circular(16),
                                 ),

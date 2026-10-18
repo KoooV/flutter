@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:pr2/theme/app_theme.dart';
 
 enum FieldType {
   fullName,
@@ -105,15 +106,15 @@ class _CustomTextFieldState extends State<CustomTextField> {
             style: const TextStyle(
               fontSize: 14,
               fontWeight: FontWeight.w500,
-              color: Colors.grey,
+              color: AppTheme.textHint,
             ),
           ),
         ),
         Container(
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(16),
-            color: Colors.grey.shade100,
-            border: Border.all(color: Colors.grey.shade300),
+            color: AppTheme.card,
+            border: Border.all(color: AppTheme.divider),
           ),
           child: TextFormField(
             controller: widget.controller,
@@ -124,11 +125,11 @@ class _CustomTextFieldState extends State<CustomTextField> {
                 : null,
             obscureText: _obscureText,
             validator: _validate,
-            style: const TextStyle(fontSize: 16),
+            style: const TextStyle(fontSize: 16, color: AppTheme.textPrimary),
             decoration: InputDecoration(
               hintText: widget.hint,
-              hintStyle: TextStyle(color: Colors.grey.shade500),
-              prefixIcon: Icon(widget.icon, color: Colors.grey.shade600),
+              hintStyle: TextStyle(color: AppTheme.textHint),
+              prefixIcon: Icon(widget.icon, color: AppTheme.textIcon),
               suffixIcon: (widget.fieldType == FieldType.password ||
                       widget.fieldType == FieldType.confirmPassword)
                   ? IconButton(
@@ -136,7 +137,7 @@ class _CustomTextFieldState extends State<CustomTextField> {
                         _obscureText
                             ? Icons.visibility_off_outlined
                             : Icons.visibility_outlined,
-                        color: Colors.grey.shade600,
+                        color: AppTheme.textIcon,
                       ),
                       onPressed: () {
                         setState(() {
@@ -154,7 +155,7 @@ class _CustomTextFieldState extends State<CustomTextField> {
                 horizontal: 20,
                 vertical: 16,
               ),
-              errorStyle: const TextStyle(fontSize: 12, color: Colors.red),
+              errorStyle: const TextStyle(fontSize: 12, color: Colors.redAccent),
               errorMaxLines: 2,
             ),
           ),

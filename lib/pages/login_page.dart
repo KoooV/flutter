@@ -1,13 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:pr2/theme/app_theme.dart';
 import 'package:pr2/widgets/text_field.dart';
-
-void main() {
-  runApp(MaterialApp(
-    debugShowCheckedModeBanner: false,
-    home: LoginPage(),
-  ));
-}
 
 class LoginPage extends StatelessWidget {
   LoginPage({super.key});
@@ -21,7 +15,7 @@ class LoginPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.white,
+      backgroundColor: AppTheme.scaffoldBackground,
       body: SafeArea(
         child: Center(
           child: SingleChildScrollView(
@@ -37,7 +31,7 @@ class LoginPage extends StatelessWidget {
                     style: TextStyle(
                       fontSize: 28,
                       fontWeight: FontWeight.bold,
-                      color: Colors.black87,
+                      color: AppTheme.textPrimary,
                     ),
                     textAlign: TextAlign.center,
                   ),
@@ -46,7 +40,7 @@ class LoginPage extends StatelessWidget {
                     'Войдите в свой аккаунт или создайте новый',
                     style: TextStyle(
                       fontSize: 16,
-                      color: Colors.grey,
+                      color: AppTheme.textHint,
                     ),
                     textAlign: TextAlign.center,
                   ),
@@ -78,7 +72,7 @@ class LoginPage extends StatelessWidget {
                       onPressed: () {},
                       child: const Text(
                         'Забыли пароль?',
-                        style: TextStyle(fontSize: 14, color: Colors.black87),
+                        style: TextStyle(fontSize: 14, color: AppTheme.textSecondary),
                       ),
                     ),
                   ),
@@ -92,13 +86,13 @@ class LoginPage extends StatelessWidget {
                           final prefs = await SharedPreferences.getInstance();
                           await prefs.setBool('has_account', true);
                           if (context.mounted) {
-                            Navigator.of(context).pushNamed('/profile');
+                            Navigator.of(context).pushReplacementNamed('/');
                           }
                         }
                       },
                       style: ElevatedButton.styleFrom(
-                        backgroundColor: Colors.black,
-                        foregroundColor: Colors.white,
+                        backgroundColor: AppTheme.surface,
+                        foregroundColor: AppTheme.textPrimary,
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(16),
                         ),
@@ -116,7 +110,7 @@ class LoginPage extends StatelessWidget {
                     children: [
                       const Text(
                         'Нет аккаунта? ',
-                        style: TextStyle(color: Colors.grey),
+                        style: TextStyle(color: AppTheme.textHint),
                       ),
                       TextButton(
                         onPressed: () {

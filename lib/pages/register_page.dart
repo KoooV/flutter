@@ -1,13 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:pr2/theme/app_theme.dart';
 import 'package:pr2/widgets/text_field.dart';
-
-void main() {
-  runApp(MaterialApp(
-    debugShowCheckedModeBanner: false,
-    home: RegisterPage(),
-  ));
-}
 
 class RegisterPage extends StatelessWidget {
   RegisterPage({super.key});
@@ -27,7 +21,7 @@ class RegisterPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.white,
+      backgroundColor: AppTheme.scaffoldBackground,
       body: SafeArea(
         child: Center(
           child: SingleChildScrollView(
@@ -43,7 +37,7 @@ class RegisterPage extends StatelessWidget {
                     style: TextStyle(
                       fontSize: 28,
                       fontWeight: FontWeight.bold,
-                      color: Colors.black87,
+                      color: AppTheme.textPrimary,
                     ),
                     textAlign: TextAlign.center,
                   ),
@@ -109,13 +103,13 @@ class RegisterPage extends StatelessWidget {
                           final prefs = await SharedPreferences.getInstance();
                           await prefs.setBool('has_account', true);
                           if (context.mounted) {
-                            Navigator.of(context).pushNamed('/profile');
+                            Navigator.of(context).pushReplacementNamed('/login');
                           }
                         }
                       },
                       style: ElevatedButton.styleFrom(
-                        backgroundColor: Colors.black,
-                        foregroundColor: Colors.white,
+                        backgroundColor: AppTheme.surface,
+                        foregroundColor: AppTheme.textPrimary,
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(16),
                         ),
@@ -136,7 +130,7 @@ class RegisterPage extends StatelessWidget {
                     children: [
                       const Text(
                         'Уже есть аккаунт? ',
-                        style: TextStyle(color: Colors.grey),
+                        style: TextStyle(color: AppTheme.textHint),
                       ),
                       TextButton(
                         onPressed: () {
