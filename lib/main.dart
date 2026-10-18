@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
 void main() {
@@ -22,9 +23,14 @@ class BiToolsApp extends StatelessWidget {
   }
 }
 
-class BiToolPage extends StatelessWidget {
+class BiToolPage extends StatefulWidget {
   const BiToolPage({super.key});
 
+  @override
+  State<BiToolPage> createState() => _BiToolPageState();
+}
+
+class _BiToolPageState extends State<BiToolPage> {
   static const String title = 'BI-ИНСТРУМЕНТЫ';
   static const String softwareName = 'Microsoft Power BI';
   static const String softwareDescription =
@@ -38,6 +44,22 @@ class BiToolPage extends StatelessWidget {
   ];
   static const String fullName = 'Ковалев А.Э.';
   static const String groupNumber = 'ИКБО-66-23';
+
+  static const List<String> imageAssets = [
+    'assets/images/bi_1.png',
+    'assets/images/bi_2.jpg',
+    'assets/images/bi_3.png',
+    'assets/images/bi_4.jpg',
+    'assets/images/bi_5.png',
+  ];
+
+  int _imageIndex = 0;
+
+  void _nextImage() {
+    setState(() {
+      _imageIndex = (_imageIndex + 1) % imageAssets.length;
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -82,9 +104,23 @@ class BiToolPage extends StatelessWidget {
                       child: Row(
                         crossAxisAlignment: CrossAxisAlignment.stretch,
                         children: [
-                          const Expanded(
+                          Expanded(
                             flex: 5,
-                            child: _OutlinedBox(child: _ImagePlaceholder()),
+                            child: _OutlinedBox(
+                              child: GestureDetector(
+                                onTap: _nextImage,
+                                child: ClipRRect(
+                                  borderRadius: BorderRadius.circular(3),
+                                  child: Image.asset(
+                                    imageAssets[_imageIndex],
+                                    key: ValueKey('bi_image_$_imageIndex'),
+                                    fit: BoxFit.cover,
+                                    width: double.infinity,
+                                    height: double.infinity,
+                                  ),
+                                ),
+                              ),
+                            ),
                           ),
                           const SizedBox(width: 16),
                           Expanded(
@@ -110,6 +146,16 @@ class BiToolPage extends StatelessWidget {
                             ),
                           ),
                         ],
+                      ),
+                    ),
+                    const SizedBox(height: 16),
+                    SizedBox(
+                      width: double.infinity,
+                      height: 40,
+                      child: ElevatedButton.icon(
+                        onPressed: _nextImage,
+                        icon: const Icon(Icons.refresh, size: 18),
+                        label: const Text('Следующая картинка'),
                       ),
                     ),
                     const SizedBox(height: 16),
@@ -164,42 +210,12 @@ class _Header extends StatelessWidget {
         text,
         textAlign: TextAlign.center,
         style: const TextStyle(
+          fontFamily: 'OpenSansCustom',
           fontSize: 18,
           fontWeight: FontWeight.bold,
+          fontStyle: FontStyle.italic,
           color: Colors.black,
           letterSpacing: 0.5,
-        ),
-      ),
-    );
-  }
-}
-
-class _ImagePlaceholder extends StatelessWidget {
-  const _ImagePlaceholder();
-
-  @override
-  Widget build(BuildContext context) {
-    return ClipRRect(
-      borderRadius: BorderRadius.circular(3),
-      child: Image.asset(
-        'assets/images/power_bi.png',
-        fit: BoxFit.cover,
-        width: double.infinity,
-        height: double.infinity,
-        errorBuilder: (context, error, stackTrace) => Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Icon(
-              Icons.insert_chart_outlined,
-              size: 64,
-              color: Colors.grey.shade600,
-            ),
-            const SizedBox(height: 8),
-            Text(
-              'Картинка',
-              style: TextStyle(fontSize: 15, color: Colors.grey.shade700),
-            ),
-          ],
         ),
       ),
     );
