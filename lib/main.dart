@@ -23,25 +23,14 @@ class BiToolsApp extends StatelessWidget {
   }
 }
 
-class BiToolPage extends StatefulWidget {
+class BiToolPage extends StatelessWidget {
   const BiToolPage({super.key});
 
-  @override
-  State<BiToolPage> createState() => _BiToolPageState();
-}
-
-class _BiToolPageState extends State<BiToolPage> {
-  static const String title = 'BI-ИНСТРУМЕНТЫ';
+  static const String title = 'НАЗВАНИЕ ПРИЛОЖЕНИЯ';
   static const String softwareName = 'Microsoft Power BI';
   static const String softwareDescription =
       'Power BI — платформа бизнес-аналитики от Microsoft для визуализации '
       'данных и создания интерактивных отчётов и дашбордов.';
-  static const List<String> features = [
-    'Интерактивные дашборды и отчёты',
-    'Подключение к 100+ источникам данных',
-    'Язык вычисляемых мер DAX',
-    'Обновление данных в реальном времени',
-  ];
   static const String fullName = 'Ковалев А.Э.';
   static const String groupNumber = 'ИКБО-66-23';
 
@@ -53,13 +42,38 @@ class _BiToolPageState extends State<BiToolPage> {
     'assets/images/bi_5.png',
   ];
 
-  int _imageIndex = 0;
-
-  void _nextImage() {
-    setState(() {
-      _imageIndex = (_imageIndex + 1) % imageAssets.length;
-    });
-  }
+  static const List<_MenuItem> menuItems = [
+    _MenuItem(
+      title: 'Дашборды',
+      subtitle: 'Интерактивная визуализация данных',
+      leadingIcon: Icons.dashboard,
+      trailingIcon: Icons.arrow_forward_ios,
+    ),
+    _MenuItem(
+      title: 'Отчёты',
+      subtitle: 'Создание и планирование отчётов',
+      leadingIcon: Icons.assessment,
+      trailingIcon: Icons.arrow_forward_ios,
+    ),
+    _MenuItem(
+      title: 'Источники',
+      subtitle: 'Подключение к базам данных',
+      leadingIcon: Icons.storage,
+      trailingIcon: Icons.arrow_forward_ios,
+    ),
+    _MenuItem(
+      title: 'DAX',
+      subtitle: 'Вычисляемые меры и формулы',
+      leadingIcon: Icons.functions,
+      trailingIcon: Icons.arrow_forward_ios,
+    ),
+    _MenuItem(
+      title: 'Экспорт',
+      subtitle: 'Выгрузка в Excel и PDF',
+      leadingIcon: Icons.file_download,
+      trailingIcon: Icons.arrow_forward_ios,
+    ),
+  ];
 
   @override
   Widget build(BuildContext context) {
@@ -72,22 +86,18 @@ class _BiToolPageState extends State<BiToolPage> {
               child: Padding(
                 padding: const EdgeInsets.all(16),
                 child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.stretch,
                   children: [
                     const _OutlinedBox(
-                      height: 60,
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          Icon(Icons.mouse, size: 20),
-                          SizedBox(width: 8),
-                          Text(
-                            softwareName,
-                            style: TextStyle(
-                              fontSize: 18,
-                              fontWeight: FontWeight.w600,
-                            ),
+                      height: 56,
+                      child: Center(
+                        child: Text(
+                          softwareName,
+                          style: TextStyle(
+                            fontSize: 18,
+                            fontWeight: FontWeight.w600,
                           ),
-                        ],
+                        ),
                       ),
                     ),
                     const SizedBox(height: 16),
@@ -100,62 +110,72 @@ class _BiToolPageState extends State<BiToolPage> {
                       ),
                     ),
                     const SizedBox(height: 16),
-                    Expanded(
-                      child: Row(
-                        crossAxisAlignment: CrossAxisAlignment.stretch,
-                        children: [
-                          Expanded(
-                            flex: 5,
-                            child: _OutlinedBox(
-                              child: GestureDetector(
-                                onTap: _nextImage,
-                                child: ClipRRect(
-                                  borderRadius: BorderRadius.circular(3),
-                                  child: Image.asset(
-                                    imageAssets[_imageIndex],
-                                    key: ValueKey('bi_image_$_imageIndex'),
-                                    fit: BoxFit.cover,
-                                    width: double.infinity,
-                                    height: double.infinity,
-                                  ),
-                                ),
+                    SizedBox(
+                      height: 170,
+                      child: ListView.builder(
+                        scrollDirection: Axis.horizontal,
+                        itemCount: imageAssets.length,
+                        itemBuilder: (context, index) {
+                          return Padding(
+                            padding: const EdgeInsets.only(right: 10),
+                            child: ClipRRect(
+                              borderRadius: BorderRadius.circular(12),
+                              child: Image.asset(
+                                imageAssets[index],
+                                fit: BoxFit.cover,
+                                width: 200,
+                                height: double.infinity,
                               ),
                             ),
-                          ),
-                          const SizedBox(width: 16),
-                          Expanded(
-                            flex: 4,
-                            child: _OutlinedBox(
-                              padding: const EdgeInsets.all(16),
-                              child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: [
-                                  for (var i = 0; i < features.length; i++)
-                                    Padding(
-                                      padding: const EdgeInsets.symmetric(
-                                        vertical: 4,
-                                      ),
-                                      child: Text(
-                                        '${i + 1}. ${features[i]}',
-                                        style: const TextStyle(fontSize: 13),
-                                      ),
-                                    ),
-                                ],
-                              ),
-                            ),
-                          ),
-                        ],
+                          );
+                        },
                       ),
                     ),
                     const SizedBox(height: 16),
-                    SizedBox(
-                      width: double.infinity,
-                      height: 40,
-                      child: ElevatedButton.icon(
-                        onPressed: _nextImage,
-                        icon: const Icon(Icons.refresh, size: 18),
-                        label: const Text('Следующая картинка'),
+                    Expanded(
+                      child: ListView.builder(
+                        itemCount: menuItems.length,
+                        itemBuilder: (context, index) {
+                          final item = menuItems[index];
+                          return Card(
+                            margin: const EdgeInsets.only(bottom: 10),
+                            elevation: 2,
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(10),
+                            ),
+                            child: ListTile(
+                              contentPadding: const EdgeInsets.symmetric(
+                                horizontal: 16,
+                                vertical: 8,
+                              ),
+                              leading: Icon(
+                                item.leadingIcon,
+                                color: Theme.of(context).colorScheme.primary,
+                                size: 28,
+                              ),
+                              title: Text(
+                                item.title,
+                                style: const TextStyle(
+                                  fontSize: 16,
+                                  fontWeight: FontWeight.w600,
+                                ),
+                              ),
+                              subtitle: Text(item.subtitle),
+                              trailing: Icon(
+                                item.trailingIcon,
+                                color: Colors.grey,
+                                size: 20,
+                              ),
+                              onTap: () {
+                                ScaffoldMessenger.of(context)
+                                    .showSnackBar(SnackBar(
+                                  content: Text(item.title),
+                                  duration: const Duration(seconds: 2),
+                                ));
+                              },
+                            ),
+                          );
+                        },
                       ),
                     ),
                     const SizedBox(height: 16),
@@ -193,6 +213,20 @@ class _BiToolPageState extends State<BiToolPage> {
       ),
     );
   }
+}
+
+class _MenuItem {
+  const _MenuItem({
+    required this.title,
+    required this.subtitle,
+    required this.leadingIcon,
+    required this.trailingIcon,
+  });
+
+  final String title;
+  final String subtitle;
+  final IconData leadingIcon;
+  final IconData trailingIcon;
 }
 
 class _Header extends StatelessWidget {

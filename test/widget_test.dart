@@ -8,27 +8,30 @@ void main() {
   testWidgets('BI tool page renders content', (WidgetTester tester) async {
     await tester.pumpWidget(const BiToolsApp());
 
-    expect(find.text('BI-ИНСТРУМЕНТЫ'), findsOneWidget);
+    expect(find.text('НАЗВАНИЕ ПРИЛОЖЕНИЯ'), findsOneWidget);
     expect(find.text('Microsoft Power BI'), findsOneWidget);
     expect(find.text('Ковалев А.Э., ИКБО-66-23'), findsOneWidget);
     expect(find.byType(Image), findsWidgets);
+    expect(find.byType(Card), findsWidgets);
   });
 
-  testWidgets('Image cycles on button tap and image tap', (WidgetTester tester) async {
+  testWidgets('Horizontal image list exists', (WidgetTester tester) async {
     await tester.pumpWidget(const BiToolsApp());
 
-    expect(find.byKey(const ValueKey('bi_image_0')), findsOneWidget);
+    expect(find.byType(ListView), findsWidgets);
+    expect(find.byType(Image), findsWidgets);
+  });
 
-    await tester.tap(find.text('Следующая картинка'));
+  testWidgets('Card tap shows SnackBar', (WidgetTester tester) async {
+    await tester.pumpWidget(const BiToolsApp());
+
+    expect(find.text('Дашборды'), findsOneWidget);
+    expect(find.text('Экспорт'), findsOneWidget);
+
+    await tester.tap(find.text('Дашборды').first);
     await tester.pump();
 
-    expect(find.byKey(const ValueKey('bi_image_0')), findsNothing);
-    expect(find.byKey(const ValueKey('bi_image_1')), findsOneWidget);
-
-    await tester.tap(find.byKey(const ValueKey('bi_image_1')));
-    await tester.pump();
-
-    expect(find.byKey(const ValueKey('bi_image_1')), findsNothing);
-    expect(find.byKey(const ValueKey('bi_image_2')), findsOneWidget);
+    expect(find.byType(SnackBar), findsOneWidget);
+    expect(find.text('Дашборды', skipOffstage: false), findsWidgets);
   });
 }
