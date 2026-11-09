@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:pr2/routes.dart';
 import 'package:pr2/theme/app_theme.dart';
+import 'package:pr2/widgets/app_bottom_nav.dart';
 import 'package:pr2/widgets/text_field.dart';
 
 class ProfilePage extends StatelessWidget {
@@ -36,7 +38,12 @@ class ProfilePage extends StatelessWidget {
                       size: 20,
                       color: AppTheme.textIcon,
                     ),
-                    onPressed: () {},
+                    onPressed: () {
+                      Navigator.of(context).pushNamedAndRemoveUntil(
+                        AppRoutes.home,
+                        (_) => false,
+                      );
+                    },
                   ),
                   const Spacer(),
                   const Text(
@@ -72,29 +79,15 @@ class ProfilePage extends StatelessWidget {
                         mainAxisSize: MainAxisSize.min,
                         crossAxisAlignment: CrossAxisAlignment.stretch,
                         children: [
-                      GestureDetector(
-                        onTap: () {
-                          final current = ModalRoute.of(context)?.settings.name;
-                          if (current != '/profile') {
-                            Navigator.of(context).pushNamed('/profile');
-                          } else {
-                            ScaffoldMessenger.of(context).showSnackBar(
-                              const SnackBar(
-                                content: Text('Это экран профиля'),
-                              ),
-                            );
-                          }
-                        },
-                        child: CustomTextField(
-                          label: 'ФИО',
-                          hint: 'Иванов Иван Иванович',
-                          icon: Icons.person_outline,
-                          fieldType: FieldType.fullName,
-                          controller: _fullNameController,
-                          focusNode: _fullNameFocus,
-                          nextFocusNode: _emailFocus,
-                          textInputAction: TextInputAction.next,
-                        ),
+                      CustomTextField(
+                        label: 'ФИО',
+                        hint: 'Иванов Иван Иванович',
+                        icon: Icons.person_outline,
+                        fieldType: FieldType.fullName,
+                        controller: _fullNameController,
+                        focusNode: _fullNameFocus,
+                        nextFocusNode: _emailFocus,
+                        textInputAction: TextInputAction.next,
                       ),
                       const SizedBox(height: 16),
                           CustomTextField(
@@ -181,6 +174,7 @@ class ProfilePage extends StatelessWidget {
           ],
         ),
       ),
+      bottomNavigationBar: const AppBottomNav(currentRoute: AppRoutes.profile),
     );
   }
 }

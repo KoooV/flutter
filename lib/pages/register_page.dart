@@ -22,6 +22,11 @@ class RegisterPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: AppTheme.scaffoldBackground,
+      appBar: AppBar(
+        backgroundColor: AppTheme.scaffoldBackground,
+        elevation: 0,
+        foregroundColor: AppTheme.textIcon,
+      ),
       body: SafeArea(
         child: Center(
           child: SingleChildScrollView(
@@ -103,7 +108,7 @@ class RegisterPage extends StatelessWidget {
                           final prefs = await SharedPreferences.getInstance();
                           await prefs.setBool('has_account', true);
                           if (context.mounted) {
-                            Navigator.of(context).pushReplacementNamed('/login');
+                            Navigator.of(context).pop();
                           }
                         }
                       },
@@ -134,7 +139,7 @@ class RegisterPage extends StatelessWidget {
                       ),
                       TextButton(
                         onPressed: () {
-                          Navigator.of(context).pushNamed('/login');
+                          Navigator.of(context).pop();
                         },
                         child: const Text(
                           'Войти',

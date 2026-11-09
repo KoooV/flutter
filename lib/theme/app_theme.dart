@@ -13,6 +13,9 @@ class AppTheme {
   static const Color textHint = Color.fromARGB(160, 255, 255, 255);
   static const Color textIcon = Color.fromARGB(180, 255, 255, 255);
 
+  static const Color header = Color.fromARGB(200, 139, 195, 74);
+  static const Color navBar = Color(0xFFD9FBB0);
+
   static ThemeData get dark => ThemeData(
         brightness: Brightness.dark,
         scaffoldBackgroundColor: scaffoldBackground,

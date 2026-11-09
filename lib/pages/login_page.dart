@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:pr2/routes.dart';
 import 'package:pr2/theme/app_theme.dart';
 import 'package:pr2/widgets/text_field.dart';
 
@@ -86,7 +87,7 @@ class LoginPage extends StatelessWidget {
                           final prefs = await SharedPreferences.getInstance();
                           await prefs.setBool('has_account', true);
                           if (context.mounted) {
-                            Navigator.of(context).pushReplacementNamed('/');
+                            Navigator.of(context).pushReplacementNamed(AppRoutes.home);
                           }
                         }
                       },
@@ -114,7 +115,7 @@ class LoginPage extends StatelessWidget {
                       ),
                       TextButton(
                         onPressed: () {
-                          Navigator.of(context).pushNamed('/register');
+                          Navigator.of(context).pushNamed(AppRoutes.register);
                         },
                         child: const Text(
                           'Зарегистрируйтесь',
