@@ -4,13 +4,17 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:pr2/bloc/home/home_bloc.dart';
 import 'package:pr2/bloc/home/home_event.dart';
 import 'package:pr2/bloc/home/home_state.dart';
+import 'package:pr2/di/injection_container.dart';
 import 'package:pr2/models/menu_item.dart';
 import 'package:pr2/routes.dart';
 import 'package:pr2/theme/app_theme.dart';
 import 'package:pr2/widgets/app_bottom_nav.dart';
 
 class HomePage extends StatelessWidget {
-  const HomePage({super.key});
+  const HomePage({super.key, this.bloc});
+
+  /// BLoC домашней страницы. Если не передан явно, берётся из DI-контейнера.
+  final HomeBloc? bloc;
 
   static const String title = 'BI';
   static const String softwareName = 'Microsoft Power BI';
@@ -28,8 +32,9 @@ class HomePage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final homeBloc = bloc ?? getIt<HomeBloc>();
     return BlocProvider(
-      create: (_) => HomeBloc()..add(const LoadMenuItems()),
+      create: (_) => homeBloc..add(const LoadMenuItems()),
       child: const _HomePageView(),
     );
   }

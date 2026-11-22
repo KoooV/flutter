@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:pr2/di/injection_container.dart';
+import 'package:pr2/bloc/home/home_bloc.dart';
 import 'package:pr2/models/menu_item.dart';
 import 'package:pr2/pages/detail_page.dart';
 import 'package:pr2/pages/home_page.dart';
@@ -9,8 +11,12 @@ import 'package:pr2/pages/register_page.dart';
 import 'package:pr2/routes.dart';
 import 'package:pr2/theme/app_theme.dart';
 
-void main() async {
+Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
+
+  // Инициализируем DI-контейнер (база Drift, репозиторий, BLoC)
+  // перед запуском приложения. UI-слой не создаёт эти объекты вручную.
+  await configureDependencies();
 
   runApp(
     MaterialApp(
@@ -22,7 +28,7 @@ void main() async {
         AppRoutes.loading: (_) => const LoadingPage(),
         AppRoutes.login: (_) => LoginPage(),
         AppRoutes.register: (_) => RegisterPage(),
-        AppRoutes.home: (_) => const HomePage(),
+        AppRoutes.home: (_) => HomePage(bloc: getIt<HomeBloc>()),
         AppRoutes.profile: (_) => ProfilePage(),
       },
       onGenerateRoute: (settings) {
