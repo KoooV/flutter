@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:pr2/bloc/theme/theme_cubit.dart';
 import 'package:pr2/routes.dart';
 import 'package:pr2/theme/app_theme.dart';
 import 'package:pr2/widgets/app_bottom_nav.dart';
@@ -22,14 +24,14 @@ class ProfilePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: AppTheme.scaffoldBackground,
+      backgroundColor: Theme.of(context).scaffoldBackgroundColor,
       body: SafeArea(
         child: Column(
           children: [
             Container(
               width: double.infinity,
               padding: const EdgeInsets.all(16),
-              color: AppTheme.card,
+              color: Theme.of(context).cardColor,
               child: Row(
                 children: [
                   IconButton(
@@ -55,7 +57,20 @@ class ProfilePage extends StatelessWidget {
                     ),
                   ),
                   const Spacer(),
-                  const SizedBox(width: 40),
+                  BlocBuilder<ThemeCubit, ThemeMode>(
+                    builder: (context, themeMode) {
+                      final isDark = themeMode == ThemeMode.dark;
+                      return IconButton(
+                        icon: Icon(
+                          isDark ? Icons.light_mode : Icons.dark_mode,
+                          color: AppTheme.textIcon,
+                        ),
+                        onPressed: () {
+                          context.read<ThemeCubit>().toggleTheme();
+                        },
+                      );
+                    },
+                  ),
                 ],
               ),
             ),
@@ -64,13 +79,14 @@ class ProfilePage extends StatelessWidget {
                 padding: const EdgeInsets.all(24),
                 child: Column(
                   mainAxisSize: MainAxisSize.min,
+                  crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
                     CircleAvatar(
                       radius: 50,
                       backgroundImage: const NetworkImage(
                         'https://i.pravatar.cc/150?u=profile',
                       ),
-                      backgroundColor: AppTheme.card,
+                      backgroundColor: Theme.of(context).cardColor,
                     ),
                     const SizedBox(height: 24),
                     Form(
@@ -148,8 +164,6 @@ class ProfilePage extends StatelessWidget {
                                 }
                               },
                               style: ElevatedButton.styleFrom(
-                                backgroundColor: AppTheme.surface,
-                                foregroundColor: AppTheme.textPrimary,
                                 shape: RoundedRectangleBorder(
                                   borderRadius: BorderRadius.circular(16),
                                 ),

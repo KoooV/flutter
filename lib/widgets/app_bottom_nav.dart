@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:pr2/routes.dart';
-import 'package:pr2/theme/app_theme.dart';
 
 class AppBottomNav extends StatelessWidget {
   const AppBottomNav({super.key, required this.currentRoute});
@@ -15,7 +14,7 @@ class AppBottomNav extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      color: AppTheme.navBar,
+      color: Theme.of(context).cardColor,
       child: SafeArea(
         top: false,
         child: SizedBox(
@@ -25,7 +24,7 @@ class AppBottomNav extends StatelessWidget {
             children: [
               IconButton(
                 iconSize: 32,
-                color: Colors.black,
+                color: Theme.of(context).iconTheme.color,
                 icon: Icon(
                   currentRoute == AppRoutes.home
                       ? Icons.home
@@ -35,7 +34,7 @@ class AppBottomNav extends StatelessWidget {
               ),
               IconButton(
                 iconSize: 32,
-                color: Colors.black,
+                color: Theme.of(context).iconTheme.color,
                 icon: Icon(
                   currentRoute == AppRoutes.profile
                       ? Icons.person

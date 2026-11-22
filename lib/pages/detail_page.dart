@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:pr2/models/menu_item.dart';
 import 'package:pr2/routes.dart';
-import 'package:pr2/theme/app_theme.dart';
 import 'package:pr2/widgets/app_bottom_nav.dart';
 
 class DetailPage extends StatelessWidget {
@@ -12,19 +11,17 @@ class DetailPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: AppTheme.scaffoldBackground,
+      backgroundColor: Theme.of(context).scaffoldBackgroundColor,
       appBar: AppBar(
-        backgroundColor: AppTheme.header,
-        foregroundColor: Colors.black,
         centerTitle: true,
         title: Text(
           item.title.toUpperCase(),
-          style: const TextStyle(
+          style: TextStyle(
             fontFamily: 'OpenSansCustom',
             fontSize: 18,
             fontWeight: FontWeight.bold,
             fontStyle: FontStyle.italic,
-            color: Colors.black,
+            color: Theme.of(context).appBarTheme.foregroundColor,
             letterSpacing: 0.5,
           ),
         ),
@@ -39,7 +36,7 @@ class DetailPage extends StatelessWidget {
                 width: 200,
                 height: 130,
                 decoration: BoxDecoration(
-                  border: Border.all(color: AppTheme.divider, width: 1.5),
+                  border: Border.all(color: Theme.of(context).dividerColor, width: 1.5),
                   borderRadius: BorderRadius.circular(12),
                 ),
                 child: ClipRRect(
@@ -51,10 +48,10 @@ class DetailPage extends StatelessWidget {
             const SizedBox(height: 32),
             Text(
               item.description,
-              style: const TextStyle(
+              style: TextStyle(
                 fontSize: 18,
                 height: 1.4,
-                color: AppTheme.textPrimary,
+                color: Theme.of(context).textTheme.bodyLarge?.color,
               ),
             ),
           ],

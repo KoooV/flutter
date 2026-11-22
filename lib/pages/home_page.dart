@@ -59,34 +59,34 @@ class _HomePageView extends StatelessWidget {
         }
 
         return Scaffold(
-          backgroundColor: AppTheme.scaffoldBackground,
+          backgroundColor: Theme.of(context).scaffoldBackgroundColor,
           body: SafeArea(
             child: Column(
               children: [
-                const _Header(text: HomePage.title),
+                _Header(text: HomePage.title),
                 Expanded(
                   child: SingleChildScrollView(
                     padding: const EdgeInsets.all(16),
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.stretch,
                       children: [
-                        const Text(
+                        Text(
                           HomePage.softwareName,
                           textAlign: TextAlign.center,
                           style: TextStyle(
                             fontSize: 18,
                             fontWeight: FontWeight.w600,
-                            color: AppTheme.textPrimary,
+                            color: Theme.of(context).textTheme.bodyLarge?.color,
                           ),
                         ),
                         SizedBox(height: _itemGap(context)),
-                        const Text(
+                        Text(
                           HomePage.softwareDescription,
                           textAlign: TextAlign.center,
                           style: TextStyle(
                             fontSize: 14,
                             height: 1.4,
-                            color: AppTheme.textSecondary,
+                            color: Theme.of(context).textTheme.bodyMedium?.color,
                           ),
                         ),
                         SizedBox(height: _gap(context)),
@@ -107,13 +107,13 @@ class _HomePageView extends StatelessWidget {
                             Navigator.of(context).pushNamed(AppRoutes.profile);
                           },
                           behavior: HitTestBehavior.opaque,
-                          child: const Row(
+                          child: Row(
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: [
                               Icon(
                                 Icons.person_outline,
                                 size: 32,
-                                color: AppTheme.textPrimary,
+                                color: Theme.of(context).textTheme.bodyLarge?.color,
                               ),
                               SizedBox(width: 16),
                               Text(
@@ -121,7 +121,7 @@ class _HomePageView extends StatelessWidget {
                                 style: TextStyle(
                                   fontSize: 16,
                                   fontWeight: FontWeight.w500,
-                                  color: AppTheme.textPrimary,
+                                  color: Theme.of(context).textTheme.bodyLarge?.color,
                                 ),
                               ),
                             ],
@@ -190,9 +190,9 @@ class _HomePageView extends StatelessWidget {
           Text(
             message,
             textAlign: TextAlign.center,
-            style: const TextStyle(
+            style: TextStyle(
               fontSize: 16,
-              color: AppTheme.textPrimary,
+              color: Theme.of(context).textTheme.bodyLarge?.color,
             ),
           ),
           const SizedBox(height: 16),
@@ -246,7 +246,7 @@ class _ImageBox extends StatelessWidget {
     return Container(
       height: 120,
       decoration: BoxDecoration(
-        border: Border.all(color: AppTheme.divider, width: 1.5),
+        border: Border.all(color: Theme.of(context).dividerColor, width: 1.5),
         borderRadius: BorderRadius.circular(12),
       ),
       child: ClipRRect(
@@ -265,13 +265,12 @@ class _MenuCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Card(
-      color: AppTheme.card,
       margin: EdgeInsets.zero,
       elevation: 0,
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(10),
-        side: const BorderSide(
-          color: AppTheme.divider,
+        side: BorderSide(
+          color: Theme.of(context).dividerColor,
           width: 1,
         ),
       ),
@@ -279,15 +278,15 @@ class _MenuCard extends StatelessWidget {
         contentPadding: const EdgeInsets.symmetric(horizontal: 16),
         title: Text(
           item.title,
-          style: const TextStyle(
+          style: TextStyle(
             fontSize: 16,
             fontWeight: FontWeight.w500,
-            color: AppTheme.textPrimary,
+            color: Theme.of(context).textTheme.bodyLarge?.color,
           ),
         ),
         trailing: Icon(
           item.trailingIcon,
-          color: AppTheme.textHint,
+          color: Theme.of(context).textTheme.bodyMedium?.color,
           size: 16,
         ),
         onTap: () {
@@ -305,19 +304,20 @@ class _Header extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final appBarTheme = Theme.of(context).appBarTheme;
     return Container(
       width: double.infinity,
-      color: AppTheme.header,
+      color: appBarTheme.backgroundColor ?? AppTheme.header,
       padding: const EdgeInsets.symmetric(vertical: 18, horizontal: 16),
       child: Text(
         text,
         textAlign: TextAlign.center,
-        style: const TextStyle(
+        style: TextStyle(
           fontFamily: 'OpenSansCustom',
           fontSize: 18,
           fontWeight: FontWeight.bold,
           fontStyle: FontStyle.italic,
-          color: Colors.black,
+          color: appBarTheme.foregroundColor ?? Colors.black,
           letterSpacing: 0.5,
         ),
       ),

@@ -24,7 +24,7 @@ class _LoadingPageState extends State<LoadingPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: AppTheme.scaffoldBackground,
+      backgroundColor: Theme.of(context).scaffoldBackgroundColor,
       body: Center(
         child: Column(
           mainAxisSize: MainAxisSize.min,
@@ -34,7 +34,7 @@ class _LoadingPageState extends State<LoadingPage> {
               height: 160,
               decoration: BoxDecoration(
                 shape: BoxShape.circle,
-                border: Border.all(color: AppTheme.textPrimary, width: 2),
+                border: Border.all(color: Theme.of(context).textTheme.bodyLarge?.color ?? AppTheme.textPrimary, width: 2),
               ),
               child: const Icon(
                 Icons.insights,

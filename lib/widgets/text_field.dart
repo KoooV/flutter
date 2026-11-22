@@ -103,18 +103,18 @@ class _CustomTextFieldState extends State<CustomTextField> {
           padding: const EdgeInsets.only(left: 16, bottom: 8),
           child: Text(
             widget.label,
-            style: const TextStyle(
+            style: TextStyle(
               fontSize: 14,
               fontWeight: FontWeight.w500,
-              color: AppTheme.textHint,
+              color: Theme.of(context).textTheme.bodyMedium?.color ?? AppTheme.textHint,
             ),
           ),
         ),
         Container(
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(16),
-            color: AppTheme.card,
-            border: Border.all(color: AppTheme.divider),
+            color: Theme.of(context).cardColor,
+            border: Border.all(color: Theme.of(context).dividerColor),
           ),
           child: TextFormField(
             controller: widget.controller,
@@ -125,11 +125,14 @@ class _CustomTextFieldState extends State<CustomTextField> {
                 : null,
             obscureText: _obscureText,
             validator: _validate,
-            style: const TextStyle(fontSize: 16, color: AppTheme.textPrimary),
+            style: TextStyle(
+              fontSize: 16,
+              color: Theme.of(context).textTheme.bodyLarge?.color ?? AppTheme.textPrimary,
+            ),
             decoration: InputDecoration(
               hintText: widget.hint,
-              hintStyle: TextStyle(color: AppTheme.textHint),
-              prefixIcon: Icon(widget.icon, color: AppTheme.textIcon),
+              hintStyle: TextStyle(color: Theme.of(context).textTheme.bodyMedium?.color ?? AppTheme.textHint),
+              prefixIcon: Icon(widget.icon, color: Theme.of(context).iconTheme.color ?? AppTheme.textIcon),
               suffixIcon: (widget.fieldType == FieldType.password ||
                       widget.fieldType == FieldType.confirmPassword)
                   ? IconButton(
@@ -137,7 +140,7 @@ class _CustomTextFieldState extends State<CustomTextField> {
                         _obscureText
                             ? Icons.visibility_off_outlined
                             : Icons.visibility_outlined,
-                        color: AppTheme.textIcon,
+                        color: Theme.of(context).iconTheme.color ?? AppTheme.textIcon,
                       ),
                       onPressed: () {
                         setState(() {

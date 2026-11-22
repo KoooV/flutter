@@ -25,7 +25,7 @@ class AppDatabase extends _$AppDatabase {
     _instance = AppDatabase._internal(NativeDatabase.createInBackground(file));
     return _instance!;
   }
-  .
+
   static AppDatabase get instance {
     if (_instance == null) {
       throw StateError(

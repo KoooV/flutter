@@ -1,4 +1,5 @@
 import 'package:get_it/get_it.dart';
+import 'package:pr2/bloc/theme/theme_cubit.dart';
 import 'package:pr2/data/database/app_database.dart';
 import 'package:pr2/data/repositories/menu_repository.dart';
 import 'package:pr2/bloc/home/home_bloc.dart';
@@ -18,6 +19,9 @@ Future<void> configureDependencies() async {
   getIt.registerFactory<HomeBloc>(
     () => HomeBloc(getIt<MenuRepository>()),
   );
+
+  // Cubit управления темой — один на всё приложение (ленивый синглтон).
+  getIt.registerLazySingleton<ThemeCubit>(() => ThemeCubit());
 
   await getIt<MenuRepository>().seedIfEmpty();
 }
