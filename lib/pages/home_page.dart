@@ -1,5 +1,9 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:pr2/bloc/home/home_bloc.dart';
+import 'package:pr2/bloc/home/home_event.dart';
+import 'package:pr2/bloc/home/home_state.dart';
 import 'package:pr2/models/menu_item.dart';
 import 'package:pr2/routes.dart';
 import 'package:pr2/theme/app_theme.dart';
@@ -22,147 +26,130 @@ class HomePage extends StatelessWidget {
     'assets/images/bi_2.jpg',
   ];
 
-  static const List<MenuItem> menuItems = [
-    MenuItem(
-      title: 'Дашборды',
-      subtitle: 'Интерактивная визуализация данных',
-      description:
-          'Дашборд объединяет несколько визуализаций на одной странице '
-          'для быстрого контроля ключевых показателей.',
-      imageAsset: 'assets/images/bi_1.png',
-      leadingIcon: Icons.dashboard,
-      trailingIcon: Icons.arrow_forward_ios,
-    ),
-    MenuItem(
-      title: 'Отчёты',
-      subtitle: 'Создание и планирование отчётов',
-      description:
-          'Отчёты оформляют данные в виде таблиц и графиков, а также могут '
-          'рассылаться по расписанию.',
-      imageAsset: 'assets/images/bi_2.jpg',
-      leadingIcon: Icons.assessment,
-      trailingIcon: Icons.arrow_forward_ios,
-    ),
-    MenuItem(
-      title: 'Источники',
-      subtitle: 'Подключение к базам данных',
-      description:
-          'Power BI подключается к базам данных, файлам Excel, облачным '
-          'сервисам и веб-страницам для загрузки исходных данных.',
-      imageAsset: 'assets/images/bi_3.png',
-      leadingIcon: Icons.storage,
-      trailingIcon: Icons.arrow_forward_ios,
-    ),
-    MenuItem(
-      title: 'DAX',
-      subtitle: 'Вычисляемые меры и формулы',
-      description:
-          'DAX — язык формул Power BI для создания вычисляемых столбцов, '
-          'мер и таблиц.',
-      imageAsset: 'assets/images/bi_4.jpg',
-      leadingIcon: Icons.functions,
-      trailingIcon: Icons.arrow_forward_ios,
-    ),
-    MenuItem(
-      title: 'Экспорт',
-      subtitle: 'Выгрузка в Excel и PDF',
-      description:
-          'Готовые отчёты и данные можно выгрузить в Excel, PDF или PowerPoint.',
-      imageAsset: 'assets/images/bi_5.png',
-      leadingIcon: Icons.file_download,
-      trailingIcon: Icons.arrow_forward_ios,
-    ),
-  ];
+  @override
+  Widget build(BuildContext context) {
+    return BlocProvider(
+      create: (_) => HomeBloc()..add(const LoadMenuItems()),
+      child: const _HomePageView(),
+    );
+  }
+}
+
+class _HomePageView extends StatelessWidget {
+  const _HomePageView();
 
   @override
   Widget build(BuildContext context) {
-    final isWide = MediaQuery.sizeOf(context).width > wideLayoutWidth;
-    final gap = _isDesktopOrWeb() ? 24.0 : 16.0;
-    final itemGap = gap / 2;
+    return BlocBuilder<HomeBloc, HomeState>(
+      builder: (context, state) {
+        Widget body;
 
-    return Scaffold(
-      backgroundColor: AppTheme.scaffoldBackground,
-      body: SafeArea(
-        child: Column(
-          children: [
-            const _Header(text: title),
-            Expanded(
-              child: SingleChildScrollView(
-                padding: const EdgeInsets.all(16),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.stretch,
-                  children: [
-                    const Text(
-                      softwareName,
-                      textAlign: TextAlign.center,
-                      style: TextStyle(
-                        fontSize: 18,
-                        fontWeight: FontWeight.w600,
-                        color: AppTheme.textPrimary,
-                      ),
-                    ),
-                    SizedBox(height: itemGap),
-                    const Text(
-                      softwareDescription,
-                      textAlign: TextAlign.center,
-                      style: TextStyle(
-                        fontSize: 14,
-                        height: 1.4,
-                        color: AppTheme.textSecondary,
-                      ),
-                    ),
-                    SizedBox(height: gap),
-                    Row(
+        if (state is HomeLoaded) {
+          body = _buildContent(context, state.items);
+        } else if (state is HomeError) {
+          body = _buildError(context, state.message);
+        } else {
+          // HomeInitial и HomeLoading — отображаем индикатор загрузки.
+          body = const _Loading();
+        }
+
+        return Scaffold(
+          backgroundColor: AppTheme.scaffoldBackground,
+          body: SafeArea(
+            child: Column(
+              children: [
+                const _Header(text: HomePage.title),
+                Expanded(
+                  child: SingleChildScrollView(
+                    padding: const EdgeInsets.all(16),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.stretch,
                       children: [
-                        for (final asset in imageAssets) ...[
-                          Expanded(child: _ImageBox(asset: asset)),
-                          if (asset != imageAssets.last) SizedBox(width: itemGap),
-                        ],
-                      ],
-                    ),
-                    SizedBox(height: gap),
-                    isWide ? _buildGrid(itemGap) : _buildList(itemGap),
-                    SizedBox(height: gap),
-                    GestureDetector(
-                      onTap: () {
-                        Navigator.of(context).pushNamed(AppRoutes.profile);
-                      },
-                      behavior: HitTestBehavior.opaque,
-                      child: const Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          Icon(
-                            Icons.person_outline,
-                            size: 32,
+                        const Text(
+                          HomePage.softwareName,
+                          textAlign: TextAlign.center,
+                          style: TextStyle(
+                            fontSize: 18,
+                            fontWeight: FontWeight.w600,
                             color: AppTheme.textPrimary,
                           ),
-                          SizedBox(width: 16),
-                          Text(
-                            '$fullName, $groupNumber',
-                            style: TextStyle(
-                              fontSize: 16,
-                              fontWeight: FontWeight.w500,
-                              color: AppTheme.textPrimary,
-                            ),
+                        ),
+                        SizedBox(height: _itemGap(context)),
+                        const Text(
+                          HomePage.softwareDescription,
+                          textAlign: TextAlign.center,
+                          style: TextStyle(
+                            fontSize: 14,
+                            height: 1.4,
+                            color: AppTheme.textSecondary,
                           ),
-                        ],
-                      ),
+                        ),
+                        SizedBox(height: _gap(context)),
+                        Row(
+                          children: [
+                            for (final asset in HomePage.imageAssets) ...[
+                              Expanded(child: _ImageBox(asset: asset)),
+                              if (asset != HomePage.imageAssets.last)
+                                SizedBox(width: _itemGap(context) / 2),
+                            ],
+                          ],
+                        ),
+                        SizedBox(height: _gap(context)),
+                        body,
+                        SizedBox(height: _gap(context)),
+                        GestureDetector(
+                          onTap: () {
+                            Navigator.of(context).pushNamed(AppRoutes.profile);
+                          },
+                          behavior: HitTestBehavior.opaque,
+                          child: const Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Icon(
+                                Icons.person_outline,
+                                size: 32,
+                                color: AppTheme.textPrimary,
+                              ),
+                              SizedBox(width: 16),
+                              Text(
+                                '${HomePage.fullName}, ${HomePage.groupNumber}',
+                                style: TextStyle(
+                                  fontSize: 16,
+                                  fontWeight: FontWeight.w500,
+                                  color: AppTheme.textPrimary,
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ],
                     ),
-                  ],
+                  ),
                 ),
-              ),
+              ],
             ),
-          ],
-        ),
-      ),
-      bottomNavigationBar: const AppBottomNav(currentRoute: AppRoutes.home),
+          ),
+          bottomNavigationBar: const AppBottomNav(currentRoute: AppRoutes.home),
+        );
+      },
     );
   }
 
-  Widget _buildList(double itemGap) {
+  Widget _buildContent(BuildContext context, List<MenuItem> items) {
+    final isWide =
+        MediaQuery.sizeOf(context).width > HomePage.wideLayoutWidth;
+    final itemGap = _itemGap(context);
+
+    if (isWide) {
+      return _buildGrid(items, itemGap);
+    }
+    return _buildList(items, itemGap);
+  }
+
+  Widget _buildList(List<MenuItem> items, double itemGap) {
     return Column(
       children: [
-        for (final item in menuItems)
+        for (final item in items)
           Padding(
             padding: EdgeInsets.only(bottom: itemGap),
             child: _MenuCard(item: item),
@@ -171,7 +158,7 @@ class HomePage extends StatelessWidget {
     );
   }
 
-  Widget _buildGrid(double itemGap) {
+  Widget _buildGrid(List<MenuItem> items, double itemGap) {
     return GridView.builder(
       shrinkWrap: true,
       physics: const NeverScrollableScrollPhysics(),
@@ -181,10 +168,56 @@ class HomePage extends StatelessWidget {
         mainAxisSpacing: itemGap,
         mainAxisExtent: 56,
       ),
-      itemCount: menuItems.length,
+      itemCount: items.length,
       itemBuilder: (context, index) {
-        return _MenuCard(item: menuItems[index]);
+        return _MenuCard(item: items[index]);
       },
+    );
+  }
+
+  Widget _buildError(BuildContext context, String message) {
+    return Center(
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          const Icon(Icons.error_outline, size: 48, color: Colors.red),
+          const SizedBox(height: 16),
+          Text(
+            message,
+            textAlign: TextAlign.center,
+            style: const TextStyle(
+              fontSize: 16,
+              color: AppTheme.textPrimary,
+            ),
+          ),
+          const SizedBox(height: 16),
+          ElevatedButton(
+            onPressed: () {
+              context.read<HomeBloc>().add(const LoadMenuItems());
+            },
+            child: const Text('Повторить'),
+          ),
+        ],
+      ),
+    );
+  }
+
+  double _gap(BuildContext context) {
+    return _isDesktopOrWeb() ? 24.0 : 16.0;
+  }
+
+  double _itemGap(BuildContext context) {
+    return _gap(context) / 2;
+  }
+}
+
+class _Loading extends StatelessWidget {
+  const _Loading();
+
+  @override
+  Widget build(BuildContext context) {
+    return const Center(
+      child: CircularProgressIndicator(),
     );
   }
 }
